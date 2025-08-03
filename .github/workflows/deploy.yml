@@ -25,7 +25,7 @@ jobs:
     
     - name: Generate HTML
       run: |
-        python html.py
+        python generate_html.py
         cat index.html  # 显示生成的文件内容
     
     - name: Commit and push changes

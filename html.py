@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import glob
-import json
+import datetime
 
 print("开始生成 index.html 文件...")
 
@@ -15,11 +15,14 @@ print(f"找到 {len(image_files)} 张图片")
 # 生成图片数组的 JavaScript 代码
 images_js = ",\n            ".join([f'"{img}"' for img in image_files])
 
+# 当前时间戳
+timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 # HTML 模板
 html_content = f"""<!DOCTYPE html>
 <html>
 <head>
-    <title>随机图片</title>
+    <title>随机图片API</title>
     <script>
         // 自动生成的图片列表
         const images = [
@@ -42,6 +45,25 @@ html_content = f"""<!DOCTYPE html>
         }};
     </script>
     <style>
+        body {{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background: #f0f0f0;
+        }}
+        h1 {{
+            color: #333;
+        }}
+        .count {{
+            color: #666;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }}
+        .timestamp {{
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }}
     </style>
 </head>
 <body>
