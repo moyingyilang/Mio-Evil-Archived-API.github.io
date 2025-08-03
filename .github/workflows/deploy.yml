@@ -1,91 +1,35 @@
-name: Update HTML with Image List
+name: Generate and Deploy
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'images/**'  # 当图片变化时触发
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
 
 jobs:
-  update-html:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        fetch-depth: 0  # 获取完整历史
-      
-    - name: Find all images
-      id: find-images
+        python-version: '3.x'
+    
+    - name: Generate HTML
       run: |
-        # 获取所有图片文件
-        IMAGE_FILES=$(find images -type f \( -iname "*.jpg" -o -iname "*.jpeg" \))
-        
-        # 生成图片数组字符串
-        IMAGE_ARRAY=""
-        for file in $IMAGE_FILES; do
-          IMAGE_ARRAY+="\"$file\","
-        done
-        
-        # 移除最后一个逗号
-        IMAGE_ARRAY=${IMAGE_ARRAY%,}
-        
-        # 设置输出
-        echo "image_array=$IMAGE_ARRAY" >> $GITHUB_OUTPUT
-        echo "image_count=$(echo "$IMAGE_FILES" | wc -l)" >> $GITHUB_OUTPUT
-        
-        # 打印信息
-        echo "找到 $image_count 张图片"
-        echo "图片数组: [$IMAGE_ARRAY]"
-        
-    - name: Update HTML file
+        python html.py
+        cat index.html  # 显示生成的文件内容
+    
+    - name: Commit and push changes
       run: |
-        # 创建新的HTML内容
-        cat << 'EOF' > index.html
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>随机图片</title>
-                <script>
-                    const images = [
-                        ${{ steps.find-images.outputs.image_array }}
-                    ];
-                    window.onload = function() {
-                            if(images.length === 0) {
-                            document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:100px;">错误：没有可用图片</h1>';
-                          return;
-                        }
-                        const randomIndex = Math.floor(Math.random() * images.length);
-                        const randomImage = images[randomIndex];
-                        window.location.href = randomImage;
-                    };
-                </script>
-            </head>
-            <body>
-            </body>
-            </html>
-            EOF
-        # 显示更新后的文件
-        echo "更新后的 index.html:"
-        cat index.html
-        
-    - name: Commit changes
-      run: |
-        # 配置Git用户
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        
-        # 添加更改
         git add index.html
-        
-        # 检查是否有更改
         if git diff-index --quiet HEAD --; then
           echo "没有更改需要提交"
         else
-          # 提交更改
-          git commit -m "自动更新图片列表 (添加 ${{ steps.find-images.outputs.image_count }} 张图片)"
-          
-          # 推送到仓库
+          git commit -m "自动更新图片列表"
           git push
         fi
