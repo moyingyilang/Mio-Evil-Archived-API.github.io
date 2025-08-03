@@ -43,37 +43,29 @@ jobs:
       run: |
         # 创建新的HTML内容
         cat << 'EOF' > index.html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>随机图片</title>
-    <script>
-        // 自动生成的图片列表
-        const images = [
-            ${{ steps.find-images.outputs.image_array }}
-        ];
-        
-        // 页面加载后立即重定向
-        window.onload = function() {
-            if(images.length === 0) {
-                document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:100px;">错误：没有可用图片</h1>';
-                return;
-            }
-            
-            // 随机选择一张图片
-            const randomIndex = Math.floor(Math.random() * images.length);
-            const randomImage = images[randomIndex];
-            
-            // 立即重定向
-            window.location.href = randomImage;
-        };
-    </script>
-</head>
-<body>
-</body>
-</html>
-EOF
-        
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>随机图片</title>
+                <script>
+                    const images = [
+                        ${{ steps.find-images.outputs.image_array }}
+                    ];
+                    window.onload = function() {
+                            if(images.length === 0) {
+                            document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:100px;">错误：没有可用图片</h1>';
+                          return;
+                        }
+                        const randomIndex = Math.floor(Math.random() * images.length);
+                        const randomImage = images[randomIndex];
+                        window.location.href = randomImage;
+                    };
+                </script>
+            </head>
+            <body>
+            </body>
+            </html>
+            EOF
         # 显示更新后的文件
         echo "更新后的 index.html:"
         cat index.html
