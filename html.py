@@ -45,25 +45,6 @@ html_content = f"""<!DOCTYPE html>
         }};
     </script>
     <style>
-        body {{
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background: #f0f0f0;
-        }}
-        h1 {{
-            color: #333;
-        }}
-        .count {{
-            color: #666;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }}
-        .timestamp {{
-            color: #999;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }}
     </style>
 </head>
 <body>
