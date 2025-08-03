@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>随机图片API</title>
-    <script src="list.js"></script>
+    <title>随机图片</title>
     <script>
-        // 页面加载时立即重定向到随机图片
-        window.addEventListener('load', function() {
-            if(typeof images === 'undefined' || images.length === 0) {
-                document.body.innerHTML = '<h1>错误：没有可用图片或列表未加载</h1>';
+        // 初始空列表，工作流会自动更新
+        const images = [];
+        
+        window.onload = function() {
+            if(images.length === 0) {
+                document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:100px;">错误：没有可用图片</h1>';
                 return;
             }
             
-            // 随机选择图片
             const randomIndex = Math.floor(Math.random() * images.length);
-            
-            // 立即重定向
-            window.location.href = images[randomIndex];
-        });
+            const randomImage = images[randomIndex];
+            window.location.href = randomImage;
+        };
     </script>
 </head>
 <body>
