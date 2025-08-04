@@ -13,22 +13,22 @@ jobs:
     permissions:  # 关键：添加写入权限
       contents: write
     steps:
-    - name: Checkout code
+    - name: Checkout 让我查(大喜
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # 获取完整历史
     
-    - name: Set up Python
+    - name: Set up Python Python也要让我查
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     
-    - name: Generate HTML
+    - name: Generate HTML 给html调成啥了
       run: |
         python html.py
         cat index.html  # 显示生成的文件内容
     
-    - name: Commit and push changes
+    - name: Commit and push changes 查完了放回去
       run: |
         # 配置Git用户
         git config user.name "GitHub Actions"
